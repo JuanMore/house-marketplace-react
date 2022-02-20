@@ -8,7 +8,7 @@ function ListingItem({listing, id, onDelete}) {
       <li className="categoryListing">
           <Link to={`/category/${listing.type}/${id}`}
               className="categoryListingLink">
-              <img src={listing.imageUrls[0]}
+              <img src={listing.imgUrls[0]}
                   alt={listing.name}
                   className="categoryListingImg"
               />
@@ -40,8 +40,9 @@ function ListingItem({listing, id, onDelete}) {
               </div>
           </Link>
           
+          {/* If on delete display trash icon */}
           {onDelete && (
-              <DeleteIcon className="removeIcons" fill="rgb(231, 76, 60)"
+              <DeleteIcon className="removeIcon" fill="rgb(231, 76, 60)"
                   onClick={ () => onDelete(listing.id, listing.name)}/>
           )}
         </li>

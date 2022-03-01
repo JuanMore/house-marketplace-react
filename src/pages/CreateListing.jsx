@@ -6,6 +6,7 @@ import {
   uploadBytesResumable,
   getDownloadURL,
 } from 'firebase/storage'
+import {addDoc, collection, serverTimestamp} from 'firebase/firestore'
 import {db} from "../firebase.config"
 import { useNavigate } from "react-router-dom"
 import Spinner from "../components/Spinner"
@@ -95,7 +96,7 @@ function CreateListing() {
         } else {
             geoloaction.lat = latitude
             geoloaction.lng = longitude
-            location = address
+            
         }
       
         // Store images in firebase
@@ -147,9 +148,23 @@ function CreateListing() {
         return
       })
 
-      console.log(imgUrls)
+      const formDataCopy = {
+        ...formData,
+        imgUrls,
+        geoloaction,
+        timestamp: serverTimestamp()
+      }
 
-        setLoading(false)
+      formDataCopy.location = address
+      delete formDataCopy.images
+      delete formDataCopy.address
+      // check if it is an offer 
+      !formDataCopy.offer && delete formDataCopy.discountedPrice
+
+      const docRef = await addDoc(collection(db, 'listings'), formDataCopy)
+      setLoading(false)
+      toast.success('Listing posted successfully')
+      navigate(`/category/${formDataCopy.type}/${docRef.id}`)
     }
     const onMutate = e => {
         let boolean = null

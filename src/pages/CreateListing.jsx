@@ -74,7 +74,7 @@ function CreateListing() {
             return
         }
 
-        let geoloaction = {}
+        let geolocation = {}
         let location
 
         if (geolocationEnabled) {
@@ -83,8 +83,8 @@ function CreateListing() {
             const data = await response.json()
             console.log(data)
 
-            geoloaction.lat = data.results[0]?.geometry.location.lat ?? 0
-            geoloaction.lng = data.results[0]?.geometry.location.lng ?? 0
+            geolocation.lat = data.results[0]?.geometry.location.lat ?? 0
+            geolocation.lng = data.results[0]?.geometry.location.lng ?? 0
 
             location = data.status === "ZERO_RESULTS" ? undefined : data.results[0]?.formatted_address
             if (location === undefined || location.includes("undefiend")){
@@ -94,8 +94,8 @@ function CreateListing() {
             }
             
         } else {
-            geoloaction.lat = latitude
-            geoloaction.lng = longitude
+            geolocation.lat = latitude
+            geolocation.lng = longitude
             
         }
       
@@ -151,7 +151,7 @@ function CreateListing() {
       const formDataCopy = {
         ...formData,
         imgUrls,
-        geoloaction,
+        geolocation,
         timestamp: serverTimestamp()
       }
 
